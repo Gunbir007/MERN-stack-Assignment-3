@@ -1,0 +1,134 @@
+<!-- Task 4:Countdown Timer -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>One-Hour Timer</title>
+    <style>
+        body {
+                font-family: sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background: #7a797fc2;
+                margin: 0;
+        }
+
+        .timer-card {
+                background: #000000e0;
+                padding: 60px 45px 0px 45px;
+                border: 3px solid white;
+                border-radius: 35px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                width: 300px;
+        }
+
+        #display {
+                font-size: 3.5rem;
+                font-weight: bold;
+                color: #f5ebebed;
+                margin-bottom: 1.5rem;
+                font-family: monospace;
+        }
+
+        .controls button {
+                padding: 12px 20px;
+                margin: 5px;
+                border: 3px solid #ffffff;
+                border-radius: 47px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: 0.2s;
+        }
+
+        .start {
+            background: #00630d;
+            color: white;
+        }
+
+        .pause {
+            background: #584f5e;
+            color: #ffffff;
+        }
+
+        .reset {
+            background: #820000;
+            color: rgb(255, 255, 255);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: #dc3545;
+            font-weight: bold;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="timer-card">
+        <div id="display">60:00</div>
+        <div class="controls">
+            <button class="reset" onclick="resetTimer()">Reset</button>
+            <button class="start" onclick="startTimer()">Start</button>
+            <button class="pause" onclick="pauseTimer()">Pause</button>
+        </div>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        let timeLeft = 3600; 
+        let timerId = null;
+
+        const display = document.getElementById('display');
+        const message = document.getElementById('message');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (timerId) return; 
+            message.textContent = "";
+
+            timerId = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timerId);
+                    timerId = null;
+                    message.textContent = "Time's up!";
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerId);
+            timerId = null;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 3600;
+            message.textContent = "";
+            updateDisplay();
+        }
+    </script>
+
+</body>
+
+</html>
